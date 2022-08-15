@@ -8,6 +8,6 @@ export namespace Log {
     }
 
     export const error = (desc: string) => {
-        console.log(varLogo, chalk.bgRed("Success"), chalk.red(desc));
+        console.log(varLogo, chalk.bgRed("Error"), chalk.red(desc));
     }
 }

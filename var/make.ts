@@ -4,21 +4,29 @@ import path from 'path';
 import { Log } from './console';
 
 export namespace Make {
-    export const runProject = () => {
-        cp.exec(`webpack`, (err, stdout, stderr) => {
-            if (err) {
-                Log.error("Something went wrong..");
-                console.log(err);
-            }
-            else {
-                cp.execSync(`ts-node Build/server`);
-                Log.success(`Server Started!`);
-            }
-        });
+
+    const install = (name: string, g = false) => {
+        if (g)
+            cp.execSync(`npm i -g ${name}`);
+        else
+            cp.execSync(`npm i ${name}`);
+        Log.success(`${name} installed`);
     }
 
     const npmInstall = () => {
-        cp.execSync(`npm i var-web var-webserver typescript ts-node webpack ts-loader style-loader css-loader webpack-cli`);
+        install(`var-web`);
+
+        install(`typescript`);
+
+        install(`webpack`);
+        install(`webpack-dev-server`);
+        install(`webpack-cli`);
+
+        install(`style-loader`);
+        install(`css-loader`);
+        install(`esbuild-loader`);
+
+        install(`npx`, true);
     }
 
     const tsconfig =
@@ -38,21 +46,27 @@ export namespace Make {
 }
 `;
     const webpack =
-        `
-const path = require('path');
+        `const path = require('path');
 
 module.exports = {
     entry: './Work/router.tsx',
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
+                test: /.tsx?$/,
+                use: {
+                    loader: 'esbuild-loader',
+                    options: {
+                        loader: 'tsx',  // Or 'ts' if you don't need tsx
+                        target: 'es2015'
+                    }
+                },
+
                 exclude: /node_modules/,
             },
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                test: /.css$/,
+                use: ['style-loader', 'css-loader']
             }
         ],
     },
@@ -63,8 +77,22 @@ module.exports = {
         filename: 'dist.js',
         path: path.resolve(__dirname, 'Build'),
     },
-    mode: 'development'
+    mode: 'development',
+
+    devServer: {
+        static: {
+            directory: path.join(__dirname, 'Build')
+        },
+        port: 3000,
+        open: true,
+    },
+    watch: true,
+    watchOptions: {
+        aggregateTimeout: 600,
+        ignored: /node_modules/
+    }
 };
+
 `;
     const router =
         `import { Var } from "var-web";
@@ -74,13 +102,6 @@ import { App } from "./app"
 Var.Path.start({
     "/": (<App />)
 });
-`;
-    const server =
-        `
-import { Server } from 'var-webserver';
-
-// start server
-Server.start(process.env.PORT || \`3000\`);
 `;
 
     const main =
@@ -99,7 +120,7 @@ Server.start(process.env.PORT || \`3000\`);
 </head>
 
 <body>
-    <script src="/Build/dist.js"></script>
+    <script src="./dist.js"></script>
 </body>
         
 </html>
@@ -133,8 +154,17 @@ export class App extends Var.Dom {
         fs.writeFileSync(path.join(process.cwd(), `Work`, `main.css`), main);
 
         // server.ts index.html
-        fs.writeFileSync(path.join(process.cwd(), `Build`, `server.ts`), server);
         fs.writeFileSync(path.join(process.cwd(), `Build`, `index.html`), indexHtml);
+    }
+
+    const editPackage = () => {
+        const myPackage = JSON.parse(
+            fs.readFileSync(path.join(process.cwd(), `package.json`), { encoding: 'utf8' })
+        );
+
+        myPackage[`scripts`][`start`] = `npx webpack-dev-server`;
+
+        fs.writeFileSync(path.join(process.cwd(), `package.json`), JSON.stringify(myPackage), { encoding: 'utf8' });
     }
 
     export const varProject = () => {
@@ -142,5 +172,7 @@ export class App extends Var.Dom {
         Log.success("npm modules are installed");
         copyFile();
         Log.success("files are copied");
+        editPackage();
+        Log.success("package is edited");
     }
 }

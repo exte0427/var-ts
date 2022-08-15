@@ -14,10 +14,4 @@ program.command(`new`)
         Make.varProject();
     });
 
-program.command(`run`)
-    .description(`run var-ts app`)
-    .action((str, option) => {
-        Make.runProject();
-    });
-
 program.parse(process.argv);
