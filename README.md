@@ -85,6 +85,22 @@ Var.Path.start({
   "/info" : (<Info />)
 });
 ```
+if users connect to your website with
+`localhost:3000/?msg=hi`
+`msg` is automatically added to `Main` dom's states
+```tsx
+// in Main class
+this.states.msg // "hi"
+```
+you can make your webpage change by using `Var.Path.set`
+```tsx
+Var.Path.set(`/`,{
+    "msg":"hi"
+});
+// this code will change your webpage
+// localhost:3000/
+// and msg will be automatically added to the class
+```
 ## Dom
 you can make custom element by using Var.Dom
 ```tsx
@@ -186,6 +202,14 @@ in the same parent
   </div>
 </div>
 // no!
+```
+you can get states by `this.states`
+```tsx
+// get state var
+this.states.var
+
+//state can be anything
+typeof this.states.var.something === `object`
 ```
 ## Component
 you can make component by using **Var.Component**\
