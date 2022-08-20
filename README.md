@@ -208,5 +208,35 @@ class Cat extends Var.Dom {
   );
 }
 ```
+## Css
+you can use css by two ways\
+### use main.css
+you can code css in main.css file\
+or you can import some css file by 
+```tsx
+import "./bootstrap.css"
+```
+### use Var.Css
+if the dom's style needs variables\
+you can use Var.Css
+```tsx
+class CatStyle extends Var.Component {
+  variable1 = "white";
+  style = () => ({
+    color:this.variable1
+  });
+}
+
+class myDom extends Var.Dom {
+  catStyle = this.use(CatStyle);
+  onRender = () => (
+    <div style = {this.catStyle.style()}>
+      hi
+    </div>
+  )
+}
+```
+use `function` to make `your style` change by changing variable
+
 ---
 **thank you**
