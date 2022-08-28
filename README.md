@@ -92,6 +92,12 @@ if users connect to your website with
 // in Main class
 this.states.msg // "hi"
 ```
+you can use `localhost:3000#anything`\
+`anything` will be automatically added to `Main` dom's states' hash
+```tsx
+// in main class
+this.states.hash  // "anything"
+```
 you can make your webpage change by using `Var.Path.set`
 ```tsx
 Var.Path.set(`/`,{

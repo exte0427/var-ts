@@ -122,7 +122,7 @@ Var.Path.start({
 </head>
 
 <body>
-    <script src="./dist.js"></script>
+    <script src="/dist.js"></script>
 </body>
         
 </html>
