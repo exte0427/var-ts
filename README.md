@@ -268,5 +268,9 @@ class myDom extends Var.Dom {
 ```
 use `function` to make `your style` change by changing variable
 
+## Some Tips
+you can use `this.setInterval` or `this.setTimeOut` to avoid\
+errors which occur when the page is changed
+
 ---
 **thank you**

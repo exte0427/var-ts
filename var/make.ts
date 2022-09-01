@@ -102,7 +102,7 @@ import { App } from "./app"
 
 // your first app
 Var.Path.start({
-    "/": (<App />)
+    "/": (App)
 });
 `;
 
@@ -170,10 +170,16 @@ export class App extends Var.Dom {
     }
 
     export const varProject = () => {
+        // setting
+        cp.execSync(`npm init -y`);
+        Log.success("npm init!");
+
         npmInstall();
         Log.success("npm modules are installed");
+
         copyFile();
         Log.success("files are copied");
+
         editPackage();
         Log.success("package is edited");
     }
