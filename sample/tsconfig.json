@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./Build/",
+    "module": "CommonJS",
+    "target": "es5",
+    "jsx": "react",
+    "jsxFactory": "Var.Create.el",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "dom.iterable"
+    ]
+  }
+}

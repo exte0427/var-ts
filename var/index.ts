@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { Make } from './make';
+import { Parse } from './parse';
 
 const program = new Command();
 
@@ -11,7 +11,7 @@ program
 program.command(`new`)
     .description(`make new var-ts app`)
     .action((str, option) => {
-        Make.varProject();
+        Parse.start();
     });
 
 program.parse(process.argv);
