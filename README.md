@@ -81,8 +81,8 @@ Var.Path.start({
 if you want to make info page, you can code
 ```tsx
 Var.Path.start({
-  "/" : (<Main />),
-  "/info" : (<Info />)
+  "/" : (Main),
+  "/info" : (Info)
 });
 ```
 if users connect to your website with
